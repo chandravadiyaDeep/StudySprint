@@ -1,56 +1,50 @@
 # StudySprint
 
-**Your syllabus. Your exam strategy. Your daily execution.**
+**PYQ Intelligence first. Evidence before predictions.**
 
-StudySprint is an early-stage, browser-only academic planning experiment. It helps students turn syllabus text into editable learning goals and inspect historical topic patterns in previous-year papers.
+StudySprint is an early-stage product focused on analyzing previous-year question papers. The active scope is intentionally narrow: upload authentic papers, extract question candidates, find repeated or similar questions, and inspect the source evidence behind every result.
 
-## Validation build
+## Active scope
+- Responsive glassmorphism-inspired interface.
+- Multiple PDF, TXT and Markdown uploads.
+- Browser-side text extraction using PDF.js for text-based PDFs.
+- Initial question segmentation and lexical similarity grouping.
+- Pattern report showing occurrence counts, paper names and original question examples.
+- Focus timer, exam countdown and local profile settings.
+- Local browser storage; no account or cloud sync in this prototype.
 
-- Glassmorphism-inspired responsive interface
-- Syllabus text extraction from selectable-text PDF, TXT and Markdown files
-- Editable unit/topic learning checklist
-- PYQ text extraction and syllabus-keyword matching across multiple papers
-- Transparent historical frequency indicators
-- Focus timer and exam countdown
-- Local browser storage and JSON data export
+## Research specifications
+- [PYQ Intelligence Engine — active specification](docs/pyq-intelligence.md)
+- [Syllabus Intelligence Engine — deferred specification](docs/syllabus-intelligence.md)
 
-## Intelligence engine specifications
+Syllabus Intelligence has been removed from the active UI and workflow. Its document is retained only as a future research track. Do not implement it until the PYQ engine meets its quality gates.
 
-The two core engines are being designed independently. Their algorithm choices, evidence requirements, evaluation plans, API contracts, and release criteria are documented here:
+## Important truth about the current build
+The current PYQ implementation is a **browser-only baseline**, not a production reasoning engine and not yet connected to an AI API. It uses question-number/paragraph segmentation and lexical token similarity. It can miss paraphrases, split questions incorrectly or group unrelated questions. Synthetic demo papers are labelled synthetic and must never be treated as real exam evidence.
 
-- [Syllabus Intelligence Engine](docs/syllabus-intelligence.md)
-- [PYQ Intelligence Engine](docs/pyq-intelligence.md)
+The product must never claim a future question is guaranteed, present historical frequency as a probability, invent topic names/marks/source references, or hide extraction failures.
 
-These are engineering specifications, not claims that the engines are already implemented. The current website remains a browser-only validation prototype; the backend and measured algorithms are future implementation work. The system must abstain when evidence is weak and must never present historical frequency as a guaranteed exam prediction.
+## Planned architecture
+GitHub Pages serves only the static frontend. A future Python/FastAPI backend will handle secure uploads, page-aware extraction, background analysis jobs, semantic retrieval/reranking, source evidence and versioned algorithms. Any private model/API key must remain in backend environment variables. Never put a private API key in index.html, JavaScript or a public GitHub repository.
+
+Evaluate the engine on human-labelled papers before selecting semantic models or making quality claims. See the PYQ specification for the API contract, metrics and release gates.
 
 ## Run locally
-
-Open `index.html` in a modern browser. PDF reading uses PDF.js from a public CDN, so an internet connection is needed for PDF files. TXT and Markdown parsing works without that library.
+Open index.html in a modern browser. PDF extraction uses PDF.js from a CDN, so an internet connection is required for PDF files. TXT and Markdown extraction works directly in the browser.
 
 ## GitHub Pages
+The workflow in .github/workflows/deploy-pages.yml deploys the static site on pushes to main. Expected project URL:
 
-The site is a static website. In repository Settings → Pages, select **Deploy from a branch**, choose `main` and `/(root)`. The expected project URL is:
+https://chandravadiyadeep.github.io/StudySprint/
 
-https://chandravadiyaDeep.github.io/StudySprint/
+Check the repository Actions tab for the deployment result.
 
-Allow a few minutes after the first deployment.
-
-## Important limitations
-
-- This is a validation prototype, not a production academic AI system.
-- Syllabus parsing uses simple heading and text heuristics. Review and edit the generated structure.
-- PYQ matching uses keyword matching against the syllabus topics. It is not semantic AI and may miss paraphrases or create false matches.
-- Scanned/image-only PDFs are not OCR-processed in this version.
-- No private API key is required or included.
-- Data is stored in the current browser only. Clearing browser data can erase it. There is no account, cloud sync or backup.
-- Historical PYQ frequency is not a prediction of future examination questions.
+## Privacy
+Files and analysis results stay in the current browser in this prototype. There is no cloud upload or API call. Clearing browser storage can remove saved progress. A future backend must include explicit consent, retention and deletion controls before processing user papers.
 
 ## Validation questions
-
-1. Could you understand the syllabus breakdown without help?
-2. Were the extracted topics accurate?
-3. Did the PYQ report help you decide what to study next?
-4. What was confusing, missing or incorrect?
-5. Would you use this before your next exam?
-
-StudySprint is being validated with real students before expanding its feature set.
+1. Did question boundaries match the original paper?
+2. Were repeated/similar questions grouped correctly?
+3. Did every pattern show the correct source paper and question text?
+4. Which false matches or missed repeats did you find?
+5. Would the report genuinely change how you prepare?
