@@ -41,7 +41,12 @@ def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
             continue
         seen_ids.add(item.question_id)
         source = candidate_by_id[item.question_id]
-        grouped[item.canonical_topic.strip()].append((source, item))
+        # Collapse trivial casing/spacing variants while preserving the first readable label.
+        canonical_label = " ".join(item.canonical_topic.split())
+        topic_key = canonical_label.casefold()
+        if topic_key not in grouped:
+            grouped[topic_key] = {"label": canonical_label, "entries": []}
+        grouped[topic_key]["entries"].append((source, item))
 
     for candidate in candidates:
         if candidate.question_id not in seen_ids:
@@ -49,7 +54,9 @@ def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
                                  "question_text": candidate.text, "reason": "No valid classification returned; excluded from topic counts."})
 
     topics = []
-    for topic, entries in grouped.items():
+    for topic_data in grouped.values():
+        topic = topic_data["label"]
+        entries = topic_data["entries"]
         # Counts are computed from verified source records, never requested from Gemini.
         paper_names = sorted({source.paper_name for source, _ in entries})
         questions = [EvidenceQuestion(
