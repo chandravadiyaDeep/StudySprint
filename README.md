@@ -45,8 +45,8 @@ Open the static frontend using VS Code Live Server (commonly `http://127.0.0.1:5
 ## Security and truth constraints
 
 - Never put a Gemini API key in frontend code, GitHub Pages or a public commit.
-- The current backend does not persist uploaded paper text.
-- Extracted text is sent to the configured backend and Google Gemini for analysis. Do not upload confidential documents.
+- The backend does not persist uploaded paper text. The browser stores the generated report (including source question excerpts) in localStorage on the current device.
+- Extracted text is sent to the configured backend and Google Gemini for analysis. Review Google's current Gemini API data-handling terms before sending sensitive material; do not upload confidential documents.
 - The backend is a development foundation, not yet ready for unrestricted public traffic. Authentication, rate limits, quotas, request abuse controls and a production privacy/retention policy are required before launch.
 - Scanned PDFs need OCR; current browser extraction handles selectable text only.
 - Question segmentation and Gemini topic labels require testing on real papers.
