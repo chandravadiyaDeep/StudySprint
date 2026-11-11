@@ -17,7 +17,8 @@ Question type must be one of: definition, explanation, comparison, derivation, n
 problem_solving, coding, proof, diagram, short_note, application, mixed, uncertain.
 Difficulty is an estimate based only on the question wording; use uncertain when unclear.
 Related question IDs may include only supplied IDs and should mean substantially similar
-questions, not merely questions from the same broad topic. Return structured JSON only."""
+questions, not merely questions from the same broad topic. If two questions are substantially
+similar, include each other's IDs (reciprocal links). Return structured JSON only."""
 
 
 def classify_questions(records: list[dict]) -> tuple[GeminiDraft, str]:
