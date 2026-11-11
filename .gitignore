@@ -1,0 +1,17 @@
+# Local secrets: never commit real API keys or environment files
+.env
+.env.*
+!.env.example
+
+# Python virtual environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local tooling and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
