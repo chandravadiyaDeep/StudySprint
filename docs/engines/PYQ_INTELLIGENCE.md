@@ -144,7 +144,14 @@ Every run should record:
 
 Change one algorithm at a time against the benchmark. Record the reason, expected improvement, measured result and regressions before promoting it.
 
-## 9. V1 exclusions
+## 9. Security and operational guardrails
+
+- The API key is loaded only by the backend process.
+- The API applies a basic per-IP request limit; this is not a substitute for authentication or account quotas.
+- Keep provider spend limits and monitoring enabled. Do not expose an unrestricted public endpoint before authentication and abuse controls are ready.
+- CORS is a browser policy, not an API access-control mechanism.
+
+## 10. V1 exclusions
 
 - Syllabus ingestion and syllabus-topic mapping
 - Exam prediction or guaranteed question forecasts
