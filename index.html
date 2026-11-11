@@ -50,7 +50,7 @@
       <div class="section-head"><h3>Your progress at a glance</h3><span>Saved on this device</span></div>
       <div class="grid stats">
         <div class="glass stat"><div class="stat-top"><span>PAPERS ANALYZED</span><span>▤</span></div><div class="stat-value" id="statTopics">0</div><div class="stat-foot">Source papers in your analysis</div></div>
-        <div class="glass stat"><div class="stat-top"><span>QUESTION PATTERNS</span><span>✓</span></div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Patterns found in uploaded papers</div></div>
+        <div class="glass stat"><div class="stat-top"><span>PATTERN GROUPS</span><span>✓</span></div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Distinct patterns identified in uploaded papers</div></div>
         <div class="glass stat"><div class="stat-top"><span>FOCUS TIME</span><span>◷</span></div><div class="stat-value" id="statFocus">0m</div><div class="stat-foot">Tracked study time</div></div>
       </div>
       <div class="grid two-col">
@@ -110,10 +110,10 @@
   function renderAll(){renderHome();renderPyq();renderFocus();$('avatar').textContent=(data.name||'S').trim().charAt(0).toUpperCase();$('studentName').value=data.name||'';$('studentCourse').value=data.course||'';}
   function renderHome(){
     // Overview metrics are based only on uploaded PYQ analysis and focus activity.
-    const paperCount=data.papers.reduce((set,p)=>set.add(...(p.paperNames||[])),new Set()).size;
+    const paperCount=new Set(data.papers.flatMap(p=>p.paperNames||[])).size;
     const questionCount=data.papers.reduce((sum,p)=>sum+(p.count||0),0);
     $('statTopics').textContent=paperCount;
-    $('statDone').textContent=questionCount;
+    $('statDone').textContent=data.papers.length;
     $('statFocus').textContent=Math.floor(data.focusSeconds/60)+'m';
     $('missionCount').textContent=data.papers.length+' pattern groups';
     $('homeTasks').innerHTML=data.papers.length
@@ -142,9 +142,7 @@
     $('examCountdown').innerHTML=data.examDate?'<div class="glass" style="padding:17px;background:rgba(100,230,225,.05)"><div class="eyebrow">'+escapeHtml(data.examName||'EXAM COUNTDOWN')+'</div><div class="streak-number">'+daysUntil(data.examDate)+'</div><div class="tiny muted">days until '+dateLabel(data.examDate)+'</div></div>':'<div class="empty">Add an exam date to start your countdown.</div>';
     $('deadlineList').innerHTML=data.examDate?'<div class="calendar-item"><div><strong>'+escapeHtml(data.examName||'Exam')+'</strong><small>'+dateLabel(data.examDate)+'</small></div><span class="tag">'+daysUntil(data.examDate)+' DAYS</span></div>':'<div class="empty">No deadlines added yet.</div>';
   }
-  function uid(){return Math.random().toString(36).slice(2,10);}
-  function toggleTask(id){const t=data.topics.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done){const day=todayKey();if(!data.studyDays.includes(day))data.studyDays.push(day);}save();}
-  async function extractFile(file){
+    async function extractFile(file){
     const ext=file.name.split('.').pop().toLowerCase();
     if(ext==='txt'||ext==='md')return await file.text();
     if(ext==='pdf'){
