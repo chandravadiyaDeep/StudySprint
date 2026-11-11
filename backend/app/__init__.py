@@ -1,0 +1,1 @@
+"""StudySprint backend application package."""
