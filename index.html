@@ -38,7 +38,7 @@
       <div class="section-head"><h3>Your progress at a glance</h3><span>Saved on this device</span></div>
       <div class="grid stats">
         <div class="glass stat"><div class="stat-top"><span>PAPERS ANALYZED</span><span>▤</span></div><div class="stat-value" id="statTopics">0</div><div class="stat-foot">Source papers in your analysis</div></div>
-        <div class="glass stat"><div class="stat-top"><span>PATTERN GROUPS</span><span>✓</span></div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Distinct patterns identified in uploaded papers</div></div>
+        <div class="glass stat"><div class="stat-top"><span>TOPICS FOUND</span><span>✓</span></div><div class="stat-value" id="statDone">0</div><div class="stat-foot">AI-classified concepts backed by uploaded questions</div></div>
         <div class="glass stat"><div class="stat-top"><span>FOCUS TIME</span><span>◷</span></div><div class="stat-value" id="statFocus">0m</div><div class="stat-foot">Tracked study time</div></div>
       </div>
       <div class="grid two-col">
@@ -69,7 +69,7 @@
     </section>
 
     <section class="view" id="view-profile">
-      <div class="glass profile-card"><div class="eyebrow">YOUR PROFILE</div><h2 style="font:600 21px 'Space Grotesk';margin:8px 0">Make this space yours.</h2><p class="sub">Your profile is stored only in this browser.</p><div class="field"><label for="studentName">Your name</label><input class="form-control" id="studentName" placeholder="Student name"></div><div class="field"><label for="studentCourse">Course / semester</label><input class="form-control" id="studentCourse" placeholder="e.g. BCA · Semester 3"></div><button class="btn" id="saveProfile">Save profile</button><div class="section-head"><h3>Local data</h3></div><p class="tiny muted" style="line-height:1.7">StudySprint stores your profile, syllabus topics, task progress and focus totals in this browser's local storage. Clearing browser data may remove it. There is no cloud backup in this test version.</p><button class="btn ghost" id="exportData">Export my data</button><button class="btn ghost" id="resetData" style="margin-left:7px">Reset local data</button></div>
+      <div class="glass profile-card"><div class="eyebrow">YOUR PROFILE</div><h2 style="font:600 21px 'Space Grotesk';margin:8px 0">Make this space yours.</h2><p class="sub">Your profile is stored only in this browser.</p><div class="field"><label for="studentName">Your name</label><input class="form-control" id="studentName" placeholder="Student name"></div><div class="field"><label for="studentCourse">Course / semester</label><input class="form-control" id="studentCourse" placeholder="e.g. BCA · Semester 3"></div><button class="btn" id="saveProfile">Save profile</button><div class="section-head"><h3>Local data</h3></div><p class="tiny muted" style="line-height:1.7">StudySprint stores your profile and focus totals in this browser. Extracted paper text is sent to the configured backend and Gemini for analysis; this prototype does not save uploaded paper files.</p><button class="btn ghost" id="exportData">Export my data</button><button class="btn ghost" id="resetData" style="margin-left:7px">Reset local data</button></div>
     </section>
     <footer style="margin-top:35px;text-align:center;color:#64708e;font-size:10px">STUDYSPRINT · VALIDATION EDITION · YOUR STUDY SPACE, YOUR PACE</footer>
   </main>
