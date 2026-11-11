@@ -2,49 +2,56 @@
 
 **PYQ Intelligence first. Evidence before predictions.**
 
-StudySprint is an early-stage product focused on analyzing previous-year question papers. The active scope is intentionally narrow: upload authentic papers, extract question candidates, find repeated or similar questions, and inspect the source evidence behind every result.
+StudySprint V1 focuses only on previous-year question paper intelligence. Syllabus Intelligence is deliberately removed from the active interface and retained as a future research document.
 
-## Active scope
-- Responsive glassmorphism-inspired interface.
-- Multiple PDF, TXT and Markdown uploads.
-- Browser-side text extraction using PDF.js for text-based PDFs.
-- Initial question segmentation and lexical similarity grouping.
-- Pattern report showing occurrence counts, paper names and original question examples.
-- Focus timer, exam countdown and local profile settings.
-- Local browser storage; no account or cloud sync in this prototype.
+## Repository structure
 
-## Research specifications
-- [PYQ Intelligence Engine — active specification](docs/pyq-intelligence.md)
-- [Syllabus Intelligence Engine — deferred specification](docs/syllabus-intelligence.md)
+- `index.html` — application shell
+- `assets/css/app.css` — glassmorphism interface styles
+- `assets/js/app.js` — browser UI, PDF text extraction and API client
+- `src/pyq/` — legacy browser-only lexical baseline retained for algorithm comparison; it is no longer used by the active UI
+- `backend/` — FastAPI service and Gemini reasoning integration
+- `docs/engines/PYQ_INTELLIGENCE.md` — active engine specification and algorithm roadmap
+- `docs/engines/SYLLABUS_INTELLIGENCE.md` — deferred future research only
 
-Syllabus Intelligence has been removed from the active UI and workflow. Its document is retained only as a future research track. Do not implement it until the PYQ engine meets its quality gates.
+## V1 analysis flow
 
-## Important truth about the current build
-The current PYQ implementation is a **browser-only baseline**, not a production reasoning engine and not yet connected to an AI API. It uses question-number/paragraph segmentation and lexical token similarity. It can miss paraphrases, split questions incorrectly or group unrelated questions. Synthetic demo papers are labelled synthetic and must never be treated as real exam evidence.
+1. User selects PDF, TXT or MD papers.
+2. Browser extracts selectable PDF text using PDF.js.
+3. Browser sends paper names and extracted text to the configured StudySprint API.
+4. FastAPI segments numbered question candidates.
+5. Gemini classifies the concepts, topics, question types and difficulty estimates.
+6. Python computes topic frequency and paper coverage from valid question IDs and original source records.
+7. UI displays each finding with the supporting source questions and paper names.
 
-The product must never claim a future question is guaranteed, present historical frequency as a probability, invent topic names/marks/source references, or hide extraction failures.
+Gemini is an interpretation layer. It does not generate counts. Frequencies are deterministic calculations from the extracted source-question records.
 
-## Planned architecture
-GitHub Pages serves only the static frontend. A future Python/FastAPI backend will handle secure uploads, page-aware extraction, background analysis jobs, semantic retrieval/reranking, source evidence and versioned algorithms. Any private model/API key must remain in backend environment variables. Never put a private API key in index.html, JavaScript or a public GitHub repository.
+## Run the backend locally
 
-Evaluate the engine on human-labelled papers before selecting semantic models or making quality claims. See the PYQ specification for the API contract, metrics and release gates.
+See [backend setup](backend/README.md). Quick start:
 
-## Run locally
-Open index.html in a modern browser. PDF extraction uses PDF.js from a CDN, so an internet connection is required for PDF files. TXT and Markdown extraction works directly in the browser.
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+# Add your private GEMINI_API_KEY to backend/.env
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Open the static frontend using VS Code Live Server (commonly `http://127.0.0.1:5500`). In PYQ Intelligence, set the API base URL to `http://127.0.0.1:8000`.
+
+## Security and truth constraints
+
+- Never put a Gemini API key in frontend code, GitHub Pages or a public commit.
+- The current backend does not persist uploaded paper text.
+- Extracted text is sent to the configured backend and Google Gemini for analysis. Do not upload confidential documents.
+- The backend is a development foundation, not yet ready for unrestricted public traffic. Authentication, rate limits, quotas, request abuse controls and a production privacy/retention policy are required before launch.
+- Scanned PDFs need OCR; current browser extraction handles selectable text only.
+- Question segmentation and Gemini topic labels require testing on real papers.
+- Historical frequency is not a prediction or guarantee about future exams.
 
 ## GitHub Pages
-The workflow in .github/workflows/deploy-pages.yml deploys the static site on pushes to main. Expected project URL:
 
-https://chandravadiyadeep.github.io/StudySprint/
-
-Check the repository Actions tab for the deployment result.
-
-## Privacy
-Files and analysis results stay in the current browser in this prototype. There is no cloud upload or API call. Clearing browser storage can remove saved progress. A future backend must include explicit consent, retention and deletion controls before processing user papers.
-
-## Validation questions
-1. Did question boundaries match the original paper?
-2. Were repeated/similar questions grouped correctly?
-3. Did every pattern show the correct source paper and question text?
-4. Which false matches or missed repeats did you find?
-5. Would the report genuinely change how you prepare?
+GitHub Pages can host the frontend only. The FastAPI backend must be deployed separately (for example, to Render) and its public HTTPS URL entered in the frontend API URL field. Check GitHub Actions for the static deployment status.
