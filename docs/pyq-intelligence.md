@@ -1,245 +1,84 @@
-# StudySprint — PYQ Intelligence Engine
+# PYQ Intelligence Engine — Research & Engineering Specification
 
-**Document status:** Initial engineering specification (v0.1)  
-**Implementation status:** Proposed; not yet validated against a labelled multi-year question-paper dataset.  
-**Core promise:** Analyse actual previous-year question papers (PYQs), map questions to a reviewed syllabus, and report transparent historical patterns. Never present historical frequency as a guarantee of future exam questions.
+**Status:** Active engine. **Rule:** Evidence before interpretation. Never fabricate topics, frequencies, marks or predictions.
 
----
+## Objective and product boundary
+Analyze a confirmed set of previous-year papers from the same course, subject, institution/board and exam family. Report extracted questions, exact repeats, near-duplicates and related concepts as separate categories; recurrence across distinct papers and confirmed years; marks only when explicitly and reliably extracted; evidence quality and extraction coverage. Historical recurrence is descriptive evidence, never a probability of future appearance.
 
-## 1. Problem and user outcome
+V1 excludes syllabus parsing, syllabus coverage, invented topic names, invented marks, exam predictions, unsupported “most important” claims and custom model training before a labelled benchmark exists.
 
-Students have multiple previous-year papers and want to know:
-- What questions and concepts appeared in each paper.
-- Which syllabus topics each question assesses.
-- How often a topic appeared, in which years, and in which papers.
-- Whether a pattern is stable, increasing, decreasing, or too sparse to interpret.
-- Which questions need manual review because the mapping is uncertain.
+## Input contract
+Each paper retains a stable ID, original filename, SHA-256 hash, user-confirmed subject/course, institution/board, exam type and year, page count, extraction method and warnings. Never silently infer a year from a filename. Preserve page-level text and source coordinates. Do not compare unrelated subjects or exam families without a visible warning.
 
-The engine reports **historical evidence**, not future certainty. It must not claim “sure-shot”, “guaranteed”, “most expected”, or exact future marks.
+## Engine pipeline
 
-## 2. Input contract
+### A. Ingestion
+Validate type, size and page count. Extract page-level text in reading order. Detect scanned/image-only pages. OCR is a separately versioned capability. Never silently drop pages or return a complete-looking report after partial extraction.
 
-Initial supported inputs:
-- Digital PDF with selectable text.
-- TXT and Markdown exports.
-- Multiple papers with user-supplied subject, institution, exam/session, and year metadata.
+### B. Question segmentation
+Use layout-aware PDF blocks first, explicit numbering patterns second, section headers and marks as supporting signals, and paragraph fallback only when needed. Preserve subparts as children of parent questions. Provide a correction interface to split, merge, delete and renumber candidates. Store raw text, normalized text, page range, question number and segmentation confidence.
 
-Later:
-- Scanned PDFs via OCR.
-- DOCX and image inputs.
-- University-specific paper templates.
+### C. Normalization and duplicate detection
+Normalize Unicode and whitespace conservatively. Preserve mathematical symbols, code, formulae and meaningful numbers. Detect exact duplicates using normalized hashes. Detect near-duplicates separately and never irreversibly merge them. Keep original text available.
 
-Each paper should store:
-- Original filename and SHA-256 hash.
-- Subject/course and institution (user-provided or verified).
-- Exam/session and year (never guess silently).
-- Source page and question number.
-- Extraction method and warnings.
-- Duplicate/near-duplicate relationships, with review status.
+### D. Similarity and pattern grouping
+Evaluate a layered approach:
+1. Baseline: TF-IDF word and character n-grams with cosine similarity.
+2. Semantic candidate retrieval: versioned sentence embeddings.
+3. Optional reranking: cross-encoder or LLM pairwise judgement for ambiguous pairs.
+4. Clustering: constrained agglomerative or graph clustering, with calibrated thresholds and cluster-diameter checks.
+5. Human review: same concept, different, or uncertain.
 
-Do not combine papers from different subjects, universities, syllabi, or exam patterns unless the user explicitly chooses to compare them.
+Keep labels distinct: exact repeat, near duplicate, same concept, related but distinct, unresolved. Semantic similarity is not proof of question equivalence.
 
-## 3. Output contract
+### E. Concept naming
+For V1, use a representative question as the cluster label. An LLM may later propose a short concept label, but it must be marked as generated, retain source examples, cite evidence and allow correction. If evidence is weak, show “Unclassified question group”.
 
-Return question-level records plus topic-level aggregation. Suggested shape:
+### F. Frequency and evidence
+Calculate descriptive values only: question occurrence count, distinct-paper count, distinct confirmed-year count, first/last confirmed year, and marks statistics only when extraction is validated. Missing years are not zero-frequency years. Every result links to source paper, page, question number and extracted text. Never call occurrence count divided by papers a probability.
 
-```json
-{
-  "paper": {
-    "filename": "paper-2025.pdf",
-    "subject": "Subject name",
-    "institution": null,
-    "exam_session": "Winter",
-    "year": 2025,
-    "pages_processed": 6
-  },
-  "questions": [
-    {
-      "id": "q1",
-      "question_number": "Q1(a)",
-      "text": "Verbatim extracted question text",
-      "page": 1,
-      "marks": null,
-      "question_type": "unknown",
-      "topic_matches": [
-        {
-          "syllabus_topic_id": "topic-1",
-          "method": "lexical_baseline",
-          "score": null,
-          "review_status": "needs_review",
-          "evidence": ["Matched terms or source excerpt"]
-        }
-      ]
-    }
-  ],
-  "topic_statistics": []
-}
-```
+### G. Abstention
+Return insufficient evidence when too few papers are supplied, extraction coverage is low, segmentation is uncertain, a cluster is unstable, papers mix subjects/exam types, or a claim cannot cite its source question. Keep separate confidence values for extraction, segmentation, similarity and label generation.
 
-The sample is a schema illustration only. Unknown marks, year, and question type remain null/unknown. A similarity score is not a probability that a question will appear in a future exam.
+## Baseline and algorithm priorities
+The current website baseline uses question-number segmentation with paragraph fallback, normalized token sets, Jaccard similarity and source-paper examples. It is transparent but can miss paraphrases, split multi-part questions and falsely merge questions sharing vocabulary. It is not semantic AI.
 
-## 4. Proposed algorithm pipeline
+Next candidates: TF-IDF word/character n-gram cosine similarity; sentence-transformer embeddings; embedding retrieval plus cross-encoder reranking; LLM-assisted concept labels with strict source-grounded output. Select from benchmark results, not demos.
 
-### Stage A — Paper ingestion and metadata
-1. Validate file and calculate hash.
-2. Extract text page-by-page while retaining page markers.
-3. Capture user-provided institution, subject, exam session, year, and maximum marks.
-4. Detect missing metadata and ask the user; do not infer year from a filename without confirmation.
-5. Detect exact duplicate files by hash.
+## Proposed backend/API architecture
+GitHub Pages must never contain private API keys. Suggested Python/FastAPI endpoints:
+- POST /api/v1/papers — upload and create ingestion job.
+- GET /api/v1/papers/{paper_id} — metadata and extraction status.
+- GET /api/v1/papers/{paper_id}/questions — extracted candidates.
+- POST /api/v1/analyses — analyze a confirmed paper set and algorithm version.
+- GET /api/v1/analyses/{analysis_id} — report and status.
+- GET /api/v1/analyses/{analysis_id}/evidence — source evidence.
+- PATCH /api/v1/questions/{question_id} — human correction.
+- POST /api/v1/feedback — false-merge, missed-match and extraction feedback.
 
-### Stage B — Question segmentation
-- Detect question numbers (Q1, 1(a), Section A, etc.), marks patterns, and section headings.
-- Use layout/line structure to avoid splitting a question from its subparts.
-- Preserve original question text and page references.
-- Flag uncertain segmentation for review.
-- Keep sub-questions distinct when they test different concepts.
+Architecture: static frontend; FastAPI backend; background queue for OCR/embeddings; object storage for originals; relational DB for metadata/results; vector index only when justified; provider-neutral model adapter; server-side environment variables for keys. Record request ID, algorithm/model version, latency, cost, errors and stage confidence.
 
-### Stage C — Syllabus alignment
-The reviewed Syllabus Intelligence output is the topic catalogue. Each question may map to:
-- One topic.
-- Multiple topics when genuinely interdisciplinary.
-- No confident match (unmapped).
+Do not send full papers to third-party models by default. Obtain consent and provide retention/deletion controls before external model processing.
 
-Use a staged retrieval/ranking system:
+## Evaluation and release gates
+Build a human-labelled benchmark from legally usable papers. Label question boundaries, subparts, exact duplicates, near duplicates, same-concept pairs, distinct pairs, marks and page locations. Split by paper/year, not random question rows.
 
-1. **Lexical baseline:** normalized token overlap and TF-IDF cosine similarity; fast and explainable.
-2. **BM25 retrieval:** rank candidate syllabus topics based on question terms and topic descriptions.
-3. **Semantic embeddings:** compare question and topic embeddings to retrieve paraphrases; evaluate model choice on local labelled data.
-4. **Cross-encoder reranking (optional):** rerank a small candidate set for better relevance.
-5. **LLM-assisted explanation (optional):** propose why a question maps to a topic, quoting evidence from the question and syllabus.
-6. **Decision threshold + abstention:** if evidence is weak or top candidates are too close, return “needs review” or “unmapped”; do not force a topic assignment.
+Measure extraction character/page coverage and OCR error; segmentation boundary precision/recall/F1; pairwise similarity precision/recall/F1 and precision at K; clustering B-cubed F1 or adjusted Rand index and cluster purity; evidence/page correctness and unsupported-claim rate; user correction rate, time saved and trust.
 
-The first implementation should establish a transparent lexical/BM25 baseline before introducing embeddings or an LLM. More complex does not automatically mean more accurate.
+Prioritize precision for student-facing claims. A missed match is preferable to a false “frequently repeated” claim. Every displayed claim must link to evidence; extraction coverage must be visible; no prediction language; regression tests for every algorithm version.
 
-### Stage D — Human-in-the-loop labels
-- Show question text, candidate topics, and matching evidence.
-- Allow user to accept, change, multi-map, or mark unmapped.
-- Store corrected labels for evaluation.
-- Do not train or tune on test papers.
+## Experiment log
+For each experiment record ID/date, dataset version and paper count, algorithm/model version, parameters, labelled metrics, false merges, missed matches, latency, cost, decision and rationale. Never overwrite prior results.
 
-### Stage E — Historical statistics
-For each topic, calculate:
-- Number of distinct papers in which it appeared.
-- Total matched question count.
-- Years/sessions observed.
-- Marks total only where marks were explicitly extracted and verified.
-- Recency and time gaps.
-- Mapping coverage and uncertainty.
+## Implementation status
+- [x] PYQ-first UI direction; syllabus removed from active UI.
+- [x] Browser-only question segmentation and lexical grouping baseline.
+- [x] Pattern examples and source paper names displayed.
+- [ ] Page-aware PDF extraction and OCR.
+- [ ] Human question-boundary correction.
+- [ ] TF-IDF baseline and labelled benchmark.
+- [ ] Embeddings and calibrated semantic grouping.
+- [ ] Backend API, authentication, storage and job queue.
+- [ ] Marks extraction and multi-institution validation.
 
-Use distinct-paper frequency as a primary measure so repeated subparts in one paper do not misleadingly count as independent appearances.
-
-Potential descriptive metrics:
-- Paper frequency = distinct papers containing a reviewed match / eligible papers processed.
-- Question frequency = reviewed matched questions / eligible questions processed.
-- Marks share = verified marks mapped to topic / total verified marks in eligible papers.
-
-Always show numerator and denominator, date range, number of papers, and missing-data warnings. Do not mix unknown marks into marks-share calculations.
-
-### Stage F — Trend analysis (descriptive only)
-- Show yearly/session counts.
-- Compare only comparable exam sessions and syllabus versions.
-- Use rolling windows only when enough papers exist.
-- Mark sparse data as “insufficient history”.
-- Show changes as historical observations, not predictions.
-
-A future ranking can be named “historical revision priority” only if its formula is visible and it clearly says it is not an exam forecast.
-
-## 5. Scoring and recommendation policy
-
-Do not ship a magic “importance score” with hidden weights.
-
-If a composite revision-priority score is later tested, document:
-- Each component and formula.
-- Normalization method.
-- Weights and why they were chosen.
-- Minimum sample requirements.
-- Sensitivity to changing weights.
-- Validation against student/reviewer judgments or learning outcomes.
-
-Until validated, show raw descriptive statistics instead of a composite score. Never convert a similarity score or frequency count into a probability of future appearance.
-
-## 6. Evaluation plan
-
-Build a gold dataset with manually labelled questions and topic mappings. Split train/dev/test by whole paper and, where possible, by year to prevent leakage.
-
-Measure:
-- Question segmentation precision, recall, and F1.
-- Topic mapping precision, recall, and F1.
-- Top-1 and top-3 accuracy on questions with a valid syllabus mapping.
-- Coverage versus accuracy at different abstention thresholds.
-- Unmapped-question rate.
-- Human agreement (e.g., inter-annotator agreement) on ambiguous mappings.
-- Duplicate detection precision/recall.
-- Marks extraction exact-match accuracy.
-- Per-university, per-subject, and per-format performance.
-
-Report confidence intervals where sample sizes allow. Never publish an accuracy percentage without dataset size, label definition, and test split details.
-
-## 7. Initial algorithm choices and priority
-
-| Priority | Method | Purpose | Limitation |
-|---|---|---|---|
-| P0 | PyMuPDF/pdfplumber | Extract text with page provenance | Scans/layout complexity |
-| P0 | Regex + layout-aware segmentation | Identify questions and subparts | Paper formats vary |
-| P0 | TF-IDF/token overlap | Transparent topic-matching baseline | Misses paraphrases |
-| P1 | BM25 | Better lexical retrieval | Still vocabulary-dependent |
-| P1 | Sentence embeddings | Retrieve semantic paraphrases | Similarity needs calibration |
-| P1 | Human review labels | Create trusted evaluation data | Review effort |
-| P2 | Cross-encoder reranking | Improve candidate ordering | More latency/cost |
-| P2 | LLM explanation | Explain candidate mapping with evidence | Hallucination risk; not ground truth |
-| P2 | Trend statistics | Summarize historical patterns | Requires comparable multi-year data |
-
-## 8. API design (proposed)
-
-- `POST /api/v1/pyq/inspect` — inspect and extract paper text/metadata.
-- `POST /api/v1/pyq/segment` — return question-level records.
-- `POST /api/v1/pyq/analyze` — map questions to a supplied reviewed syllabus and calculate historical statistics.
-- `PATCH /api/v1/pyq/questions/{question_id}/mapping` — save user-reviewed topic mapping.
-- `GET /api/v1/pyq/reports/{report_id}` — retrieve analysis.
-- `GET /api/v1/pyq/reports/{report_id}/export` — export traceable report.
-
-The engine should receive a syllabus version/ID, not independently invent its own syllabus taxonomy.
-
-## 9. Test cases required before claiming reliability
-
-- Standard numbered paper.
-- Section-based paper with subparts.
-- Questions spanning multiple pages.
-- Tables, equations, and code blocks.
-- Repeated questions with changed wording.
-- Questions paraphrasing syllabus topics.
-- Questions covering multiple topics.
-- Questions outside the supplied syllabus.
-- Missing year/marks metadata.
-- Duplicate paper upload.
-- Scanned PDF and OCR errors.
-- Different university formats and syllabus revisions.
-
-## 10. Privacy, security, and operational rules
-
-- Never expose provider API keys in browser code or public repository.
-- All model calls go through backend secrets.
-- Treat paper contents as untrusted input; never execute or follow embedded instructions.
-- Do not log raw question papers by default.
-- Make upload retention/deletion policy clear.
-- Respect copyright: analysis should not imply ownership or authorize redistribution of full papers.
-
-## 11. Development roadmap
-
-1. **Baseline:** ingest a small set of papers and manually label questions/topics.
-2. **Segmentation:** build page-aware question extraction with uncertainty flags.
-3. **Lexical matching:** implement TF-IDF/BM25 and compare against human labels.
-4. **Review UI:** accept/correct/unmap question-topic matches.
-5. **Semantic retrieval:** evaluate embeddings against the lexical baseline; keep only if measured performance improves.
-6. **Historical reporting:** add counts/trends with visible denominators and sample-size warnings.
-7. **Optional model explanations:** introduce only with evidence-grounding checks and cost/latency measurement.
-
-## 12. Definition of done
-
-A release is not complete because it produces a ranked list. It is complete only when:
-- Every question has source/page provenance.
-- Topic mappings can abstain and be corrected.
-- Statistics show the underlying papers, years, and denominators.
-- Similarity is not presented as future exam probability.
-- Evaluation is performed on held-out papers with published dataset details.
-- Tests pass and limitations are visible to students.
+**Current truth:** the browser implementation is a prototype baseline, not an API-connected reasoning engine. Do not market it as one until the evaluation and release gates are met.
