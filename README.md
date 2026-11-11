@@ -9,7 +9,6 @@ StudySprint V1 focuses only on previous-year question paper intelligence. Syllab
 - `index.html` — application shell
 - `assets/css/app.css` — glassmorphism interface styles
 - `assets/js/app.js` — browser UI, PDF text extraction and API client
-- `src/pyq/` — legacy browser-only lexical baseline retained for algorithm comparison; it is no longer used by the active UI
 - `backend/` — FastAPI service and Gemini reasoning integration
 - `docs/engines/PYQ_INTELLIGENCE.md` — active engine specification and algorithm roadmap
 - `docs/engines/SYLLABUS_INTELLIGENCE.md` — deferred future research only
@@ -28,7 +27,7 @@ Gemini is an interpretation layer. It does not generate counts. Frequencies are 
 
 ## Run the backend locally
 
-See [backend setup](backend/README.md). Quick start:
+See [backend setup](backend/README.md) for the complete local setup and testing instructions. Quick start:
 
 ```powershell
 cd backend
