@@ -4,7 +4,8 @@ import unicodedata
 from dataclasses import dataclass
 
 # Recognize common exam question numbering; this is deliberately conservative.
-BOUNDARY = re.compile(r"(?im)^\\s*(?:Q(?:uestion)?\\s*)?\\d{1,2}\\s*[.)]\\s+|^\\s*Q\\s*\\d{1,2}\\s*[:.)-]\\s+")
+BOUNDARY = re.compile(r"(?im)^\s*(?:Q(?:uestion)?\s*)?\d{1,2}\s*[.)]\s+|^\s*Q\s*\d{1,2}\s*[:.)-]\s+")
+
 
 @dataclass
 class QuestionCandidate:
@@ -16,12 +17,12 @@ class QuestionCandidate:
 
 def normalize_for_detection(text: str) -> str:
     # Normalize only for boundary detection; preserve original text in each candidate.
-    return unicodedata.normalize("NFKC", text).replace("\\r\\n", "\\n").replace("\\r", "\\n")
+    return unicodedata.normalize("NFKC", text).replace("\r\n", "\n").replace("\r", "\n")
 
 
 def segment_paper(paper_name: str, text: str, paper_index: int) -> tuple[list[QuestionCandidate], list[str]]:
     normalized = normalize_for_detection(text)
-    lines = normalized.split("\\n")
+    lines = normalized.split("\n")
     starts: list[int] = []
     for index, line in enumerate(lines):
         if BOUNDARY.match(line):
@@ -36,10 +37,10 @@ def segment_paper(paper_name: str, text: str, paper_index: int) -> tuple[list[Qu
     candidates: list[QuestionCandidate] = []
     for position, start in enumerate(starts):
         end = starts[position + 1] if position + 1 < len(starts) else len(lines)
-        raw = "\\n".join(lines[start:end]).strip()
+        raw = "\n".join(lines[start:end]).strip()
         # Remove leading question number from the stored text only when it is a boundary marker.
-        raw = re.sub(r"^\\s*(?:Q(?:uestion)?\\s*)?\\d{1,2}\\s*[.)][: -]?\\s*", "", raw, count=1, flags=re.I)
-        raw = re.sub(r"\\s+", " ", raw).strip()
+        raw = re.sub(r"^\s*(?:Q(?:uestion)?\s*)?\d{1,2}\s*[.)][: -]?\s*", "", raw, count=1, flags=re.I)
+        raw = re.sub(r"\s+", " ", raw).strip()
         if len(raw) < 12:
             warnings.append(f"{paper_name}: skipped a very short candidate at extracted question {position + 1}.")
             continue
