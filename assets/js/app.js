@@ -63,7 +63,17 @@
       if(!window.pdfjsLib)throw new Error('PDF reader could not load. Check your internet connection and try again.');
       pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       const buffer=await file.arrayBuffer(),pdf=await pdfjsLib.getDocument({data:buffer}).promise;let text='';
-      for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i),content=await page.getTextContent();text+=content.items.map(x=>x.str).join(' ')+'\n';}
+      for(let i=1;i<=pdf.numPages;i++){
+        const page=await pdf.getPage(i),content=await page.getTextContent();
+        // Rebuild approximate visual lines from PDF text-item Y coordinates so question numbering survives extraction.
+        let currentY=null,currentLine=[];
+        for(const item of content.items){
+          const y=Math.round(item.transform?.[5]||0);
+          if(currentY!==null&&Math.abs(y-currentY)>2){text+=currentLine.join(' ')+'\n';currentLine=[];}
+          currentY=y;currentLine.push(item.str);
+        }
+        if(currentLine.length)text+=currentLine.join(' ')+'\n';
+      }
       if(text.trim().length<30)throw new Error('This PDF appears to be scanned or image-only. This version reads selectable PDF text; OCR is not enabled yet.');
       return text;
     }
