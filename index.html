@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080b18">
-  <meta name="description" content="StudySprint turns your syllabus and previous-year papers into a clear study plan.">
-  <title>StudySprint — Study with direction</title>
+  <meta name="description" content="StudySprint analyzes previous-year question papers and reports evidence-backed historical patterns.">
+  <title>StudySprint — PYQ Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,8 +29,7 @@
     <div class="brand"><div class="brand-mark">S</div><div class="brand-name">study<span>sprint</span></div></div>
     <div class="nav-label">WORKSPACE</div>
     <nav class="nav" aria-label="Main navigation">
-      <button class="active" data-view="home"><span class="nav-icon">⌂</span>Home</button>
-      <button data-view="syllabus"><span class="nav-icon">▤</span>Syllabus</button>
+      <button class="active" data-view="home"><span class="nav-icon">⌂</span>Overview</button>
       <button data-view="pyq"><span class="nav-icon">◈</span>PYQ Intelligence</button>
       <button data-view="focus"><span class="nav-icon">◷</span>Focus & Deadline</button>
       <button data-view="profile"><span class="nav-icon">◎</span>Profile</button>
@@ -45,46 +44,30 @@
 
     <section class="view active" id="view-home">
       <div class="grid hero-grid">
-        <div class="glass hero"><div class="eyebrow">A CLEARER WAY TO PREPARE</div><h2>Don't just make a study list.<br><span class="gradient-text">Know what to do next.</span></h2><p>Turn your syllabus into smaller learning goals. Use previous-year questions to understand recurring topics. Then make a plan you can actually follow.</p><div class="hero-actions"><button class="btn" data-go="syllabus">Build my study plan ↗</button><button class="btn secondary" data-go="pyq">Analyze previous papers</button></div></div>
+        <div class="glass hero"><div class="eyebrow">A CLEARER WAY TO PREPARE</div><h2>Understand what past papers actually show.<br><span class="gradient-text">Study from evidence.</span></h2><p>Upload previous-year papers, inspect extracted questions, compare recurring question patterns and see exactly which papers support each finding.</p><div class="hero-actions"><button class="btn" data-go="pyq">Analyze previous papers ↗</button></div></div>
         <div class="glass streak"><div class="streak-top"><span class="eyebrow">YOUR CONSISTENCY</span><span>✦</span></div><div><div class="streak-number" id="streakCount">0 days</div><div class="muted tiny">Study days recorded</div></div><div class="progress"><span id="streakBar" style="width:0%"></span></div><div class="muted tiny" id="streakHint">Start with one focused session today.</div></div>
       </div>
       <div class="section-head"><h3>Your progress at a glance</h3><span>Saved on this device</span></div>
       <div class="grid stats">
-        <div class="glass stat"><div class="stat-top"><span>SYLLABUS TOPICS</span><span>▤</span></div><div class="stat-value" id="statTopics">0</div><div class="stat-foot">Topics added to your plan</div></div>
-        <div class="glass stat"><div class="stat-top"><span>COMPLETED</span><span>✓</span></div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Learning goals completed</div></div>
+        <div class="glass stat"><div class="stat-top"><span>PAPERS ANALYZED</span><span>▤</span></div><div class="stat-value" id="statTopics">0</div><div class="stat-foot">Source papers in your analysis</div></div>
+        <div class="glass stat"><div class="stat-top"><span>QUESTION PATTERNS</span><span>✓</span></div><div class="stat-value" id="statDone">0</div><div class="stat-foot">Patterns found in uploaded papers</div></div>
         <div class="glass stat"><div class="stat-top"><span>FOCUS TIME</span><span>◷</span></div><div class="stat-value" id="statFocus">0m</div><div class="stat-foot">Tracked study time</div></div>
       </div>
       <div class="grid two-col">
-        <div><div class="section-head"><h3>Today's mission</h3><span id="missionCount">0 tasks</span></div><div class="glass panel"><div id="homeTasks" class="task-list"><div class="empty"><b>Your next step starts here</b>Upload your syllabus to turn a big subject into small, manageable goals.</div></div></div></div>
-        <div><div class="section-head"><h3>Upcoming deadline</h3><span>Exam countdown</span></div><div class="glass panel" id="homeDeadline"><div class="empty"><b>No exam date added</b>Add your next exam in Focus & Deadline to keep it in view.</div></div><div class="section-head"><h3>StudySprint method</h3></div><div class="glass panel"><div class="tiny" style="line-height:2;color:#b8c3df"><span class="gradient-text">GOAL</span> → Decide what to finish<br><span class="gradient-text">PLAN</span> → Break it into small steps<br><span class="gradient-text">DEADLINE</span> → Give each step a date<br><span class="gradient-text">EXECUTION</span> → Focus on one task<br><span class="gradient-text">CONSISTENCY</span> → Return tomorrow</div></div></div>
+        <div><div class="section-head"><h3>Today's mission</h3><span id="missionCount">0 tasks</span></div><div class="glass panel"><div id="homeTasks" class="task-list"><div class="empty"><b>Your next step starts here</b>Upload previous-year papers to reveal patterns backed by source questions.</div></div></div></div>
+        <div><div class="section-head"><h3>Upcoming deadline</h3><span>Exam countdown</span></div><div class="glass panel" id="homeDeadline"><div class="empty"><b>No exam date added</b>Add your next exam in Focus & Deadline to keep it in view.</div></div><div class="section-head"><h3>StudySprint method</h3></div><div class="glass panel"><div class="tiny" style="line-height:2;color:#b8c3df"><span class="gradient-text">UPLOAD</span> → Add authentic past papers<br><span class="gradient-text">EXTRACT</span> → Identify question candidates<br><span class="gradient-text">COMPARE</span> → Group similar questions<br><span class="gradient-text">VERIFY</span> → Inspect source evidence<br><span class="gradient-text">IMPROVE</span> → Test against real papers</div></div></div>
       </div>
-    </section>
-
-    <section class="view" id="view-syllabus">
-      <div class="grid two-col">
-        <div class="glass panel">
-          <div class="eyebrow">FEATURE 01 · SYLLABUS INTELLIGENCE</div><h2 style="font:600 21px 'Space Grotesk';margin:9px 0">Make the syllabus manageable.</h2><p class="sub" style="line-height:1.7">Upload a text-based PDF or paste syllabus text. StudySprint finds likely units and topics, then lets you edit the learning breakdown.</p>
-          <div class="upload-box" id="syllabusDrop"><div class="upload-icon">⇧</div><h3>Drop your syllabus here</h3><p>PDF, TXT or MD · Text-based PDFs work best</p><button class="btn secondary" id="chooseSyllabus">Choose a file</button><input class="file-input" type="file" id="syllabusFile" accept=".pdf,.txt,.md"></div>
-          <div class="field"><label for="syllabusText">Or paste your syllabus text</label><textarea class="form-control" id="syllabusText" rows="7" placeholder="Paste subject units, chapters and topics here..."></textarea></div>
-          <div class="row"><div class="field"><label for="subjectName">Subject name</label><input class="form-control" id="subjectName" placeholder="e.g. Data Structures"></div><div class="field"><label for="examDateForPlan">Target exam date (optional)</label><input class="form-control" id="examDateForPlan" type="date"></div></div>
-          <button class="btn" id="analyzeSyllabus">Break down my syllabus ↗</button>
-          <button class="btn ghost" id="demoSyllabus" style="margin-left:7px">Try sample</button>
-        </div>
-        <div class="glass panel"><div class="eyebrow">HOW IT WORKS</div><h3 style="font:600 16px 'Space Grotesk'">From broad syllabus to clear action</h3><div class="task-list" style="margin-top:16px"><div class="task"><span class="tag">01</span><div><div class="task-title">Identify units</div><div class="task-meta">Find chapter and unit boundaries.</div></div></div><div class="task"><span class="tag">02</span><div><div class="task-title">Extract smaller topics</div><div class="task-meta">Create a checklist you can edit.</div></div></div><div class="task"><span class="tag">03</span><div><div class="task-title">Set your goal and deadline</div><div class="task-meta">Turn each topic into a learning task.</div></div></div></div><div class="notice">This first version uses document text and simple heading detection. Always review the extracted structure against your original syllabus. It does not claim to understand every academic context automatically.</div></div>
-      </div>
-      <div class="section-head"><h3>Your learning breakdown</h3><span id="syllabusSummary">No syllabus analyzed yet</span></div>
-      <div class="glass panel" id="syllabusResults"><div class="empty"><b>Your subject roadmap will appear here</b>Upload or paste a syllabus to get started.</div></div>
     </section>
 
     <section class="view" id="view-pyq">
       <div class="grid two-col">
-        <div class="glass panel"><div class="eyebrow">FEATURE 02 · PYQ INTELLIGENCE</div><h2 style="font:600 21px 'Space Grotesk';margin:9px 0">Find patterns in past papers.</h2><p class="sub" style="line-height:1.7">Add multiple previous-year papers for the same subject. We'll extract question text and compare it with your syllabus topics.</p>
+        <div class="glass panel"><div class="eyebrow">FEATURE 02 · PYQ INTELLIGENCE</div><h2 style="font:600 21px 'Space Grotesk';margin:9px 0">Find patterns in past papers.</h2><p class="sub" style="line-height:1.7">Upload papers from the same course, subject and exam family. The engine extracts question candidates, groups similar questions and reports recurrence with source-paper evidence.</p>
           <div class="upload-box" id="pyqDrop"><div class="upload-icon">⇧</div><h3>Drop previous-year papers</h3><p>Upload multiple text-based PDFs or TXT files</p><button class="btn secondary" id="choosePyq">Choose papers</button><input class="file-input" type="file" id="pyqFiles" accept=".pdf,.txt,.md" multiple></div>
           <div class="field"><label for="pyqSubject">Subject / paper set name</label><input class="form-control" id="pyqSubject" placeholder="e.g. Data Structures · Semester 3"></div>
           <button class="btn" id="analyzePyq">Analyze papers ↗</button><button class="btn ghost" id="demoPyq" style="margin-left:7px">Try sample</button>
           <div id="pyqFileList" class="tiny muted" style="margin-top:12px">No papers selected.</div>
         </div>
-        <div class="glass panel"><div class="eyebrow">WHAT YOU'LL SEE</div><h3 style="font:600 16px 'Space Grotesk'">Evidence, not exam predictions.</h3><div class="task-list" style="margin-top:16px"><div class="task"><span class="tag">FREQ</span><div><div class="task-title">Topic frequency</div><div class="task-meta">How often a topic appears in uploaded papers.</div></div></div><div class="task"><span class="tag">MARKS</span><div><div class="task-title">Marks evidence</div><div class="task-meta">Marks detected where question formatting makes them readable.</div></div></div><div class="task"><span class="tag">PRIORITY</span><div><div class="task-title">Study priority</div><div class="task-meta">A transparent ranking based on the papers you provide.</div></div></div></div><div class="notice">Historical frequency is not a guarantee of future exam questions. A low-frequency topic may still be required by your syllabus. Keep full syllabus coverage in your plan.</div></div>
+        <div class="glass panel"><div class="eyebrow">WHAT YOU'LL SEE</div><h3 style="font:600 16px 'Space Grotesk'">Evidence, not exam predictions.</h3><div class="task-list" style="margin-top:16px"><div class="task"><span class="tag">01</span><div><div class="task-title">Question extraction</div><div class="task-meta">Identify question boundaries and retain source locations.</div></div></div><div class="task"><span class="tag">02</span><div><div class="task-title">Pattern grouping</div><div class="task-meta">Group near-duplicate and related questions for review.</div></div></div><div class="task"><span class="tag">03</span><div><div class="task-title">Evidence-backed recurrence</div><div class="task-meta">Show counts, years and source-paper references.</div></div></div></div><div class="notice">This first engine iteration reports patterns only within the files you upload. It does not know your full curriculum, cannot guarantee future questions, and must not label a question as important without showing its supporting papers.</div></div>
       </div>
       <div class="section-head"><h3>PYQ analysis</h3><span id="pyqSummary">No papers analyzed yet</span></div>
       <div class="glass panel" id="pyqResults"><div class="empty"><b>Your topic priority report will appear here</b>Upload papers to identify repeated topics.</div></div>
@@ -110,45 +93,49 @@
 (function(){
   'use strict';
   const KEY='studysprint.validation.v1';
-  const defaults={name:'',course:'',subject:'',topics:[],papers:[],examName:'',examDate:'',focusSeconds:0,completedSessions:0,studyDays:[],lastStudyDate:'',tasks:[]};
+  const defaults={name:'',course:'',papers:[],pyqSubject:'',examName:'',examDate:'',focusSeconds:0,completedSessions:0,studyDays:[],lastStudyDate:'',tasks:[]};
   let data=loadData(),selectedPyq=[],timerSeconds=25*60,timerRunning=false,timerInterval=null;
   const $=id=>document.getElementById(id);
-  function loadData(){try{return Object.assign({},defaults,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){return {...defaults};}}
+  function loadData(){try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');return Object.assign({},defaults,saved,{topics:[]});}catch(e){return {...defaults};}}
   function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll();}
   function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600);}
   function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   function dateLabel(value){if(!value)return '';return new Date(value+'T00:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});}
-  const pageMeta={home:['YOUR STUDY SPACE','Good to see you.','Small steps. Clear direction. Consistent progress.'],syllabus:['FEATURE 01','Syllabus Intelligence','Break your syllabus into achievable learning goals.'],pyq:['FEATURE 02','PYQ Intelligence','Use previous papers as evidence for your study priorities.'],focus:['EXECUTION','Focus & Deadline','Turn your plan into focused study sessions.'],profile:['SETTINGS','Your profile','A simple, private study space on this device.']};
+  const pageMeta={home:['YOUR STUDY SPACE','Good to see you.','A focused workspace for evidence-based exam preparation.'],pyq:['CORE ENGINE','PYQ Intelligence','Extract questions, compare patterns and inspect supporting evidence.'],focus:['EXECUTION','Focus & Deadline','Protect time for deliberate study.'],profile:['SETTINGS','Your profile','A simple, private study space on this device.']};
   function navigate(view){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));$('eyebrow').textContent=pageMeta[view][0];$('pageTitle').textContent=pageMeta[view][1];$('pageSub').textContent=pageMeta[view][2];window.scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.view)));
   document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.go)));
   $('todayDate').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
-  function renderAll(){renderHome();renderSyllabus();renderPyq();renderFocus();$('avatar').textContent=(data.name||'S').trim().charAt(0).toUpperCase();$('studentName').value=data.name||'';$('studentCourse').value=data.course||'';}
+  function renderAll(){renderHome();renderPyq();renderFocus();$('avatar').textContent=(data.name||'S').trim().charAt(0).toUpperCase();$('studentName').value=data.name||'';$('studentCourse').value=data.course||'';}
   function renderHome(){
-    const total=data.topics.length,done=data.topics.filter(t=>t.done).length;
-    $('statTopics').textContent=total;$('statDone').textContent=done;$('statFocus').textContent=Math.floor(data.focusSeconds/60)+'m';
-    const days=data.studyDays.length;$('streakCount').textContent=days+' day'+(days===1?'':'s');$('streakBar').style.width=Math.min(100,days*10)+'%';$('streakHint').textContent=days?'Every session is a step forward.':'Start with one focused session today.';
-    const incomplete=data.topics.filter(t=>!t.done).slice(0,4);$('missionCount').textContent=incomplete.length+' tasks';
-    $('homeTasks').innerHTML=incomplete.length?incomplete.map(t=>'<div class="task"><button class="check" data-task="'+t.id+'" aria-label="Mark complete"></button><div style="min-width:0;flex:1"><div class="task-title">'+escapeHtml(t.title)+'</div><div class="task-meta">'+escapeHtml(t.unit||data.subject||'Learning goal')+'</div></div><span class="tag">NEXT</span></div>').join(''):'<div class="empty"><b>Nothing waiting in your mission list</b>Add a syllabus or complete your current learning goals.</div>';
-    $('homeTasks').querySelectorAll('[data-task]').forEach(b=>b.addEventListener('click',()=>toggleTask(b.dataset.task)));
-    $('homeDeadline').innerHTML=data.examDate?'<div class="eyebrow">'+escapeHtml(data.examName||'UPCOMING EXAM')+'</div><div class="streak-number">'+daysUntil(data.examDate)+'</div><div class="muted tiny">days remaining · '+dateLabel(data.examDate)+'</div>':'<div class="empty"><b>No exam date added</b>Add your next exam in Focus & Deadline to keep it in view.</div>';
+    // Overview metrics are based only on uploaded PYQ analysis and focus activity.
+    const paperCount=data.papers.reduce((set,p)=>set.add(...(p.paperNames||[])),new Set()).size;
+    const questionCount=data.papers.reduce((sum,p)=>sum+(p.count||0),0);
+    $('statTopics').textContent=paperCount;
+    $('statDone').textContent=questionCount;
+    $('statFocus').textContent=Math.floor(data.focusSeconds/60)+'m';
+    $('missionCount').textContent=data.papers.length+' pattern groups';
+    $('homeTasks').innerHTML=data.papers.length
+      ? data.papers.slice(0,4).map(p=>'<div class="task"><span class="tag">'+(p.count||0)+'×</span><div style="min-width:0;flex:1"><div class="task-title">'+escapeHtml(p.label||p.topic||'Question pattern')+'</div><div class="task-meta">'+escapeHtml((p.paperNames||[]).join(', '))+'</div></div></div>').join('')
+      : '<div class="empty"><b>No PYQ evidence yet</b>Upload previous-year papers to discover recurring question patterns. The report will show the papers behind each finding.</div>';
+    $('homeDeadline').innerHTML=data.examDate
+      ? '<div class="eyebrow">'+escapeHtml(data.examName||'UPCOMING EXAM')+'</div><div class="streak-number">'+daysUntil(data.examDate)+'</div><div class="muted tiny">days remaining · '+dateLabel(data.examDate)+'</div>'
+      : '<div class="empty"><b>No exam date added</b>Add your next exam in Focus & Deadline to keep it in view.</div>';
+    const days=data.studyDays.length;
+    $('streakCount').textContent=days+' day'+(days===1?'':'s');
+    $('streakBar').style.width=Math.min(100,days*10)+'%';
+    $('streakHint').textContent=days?'Every session is a step forward.':'Start with one focused session today.';
   }
   function daysUntil(date){const a=new Date();a.setHours(0,0,0,0);return Math.ceil((new Date(date+'T00:00:00')-a)/86400000);}
-  function renderSyllabus(){
-    $('syllabusSummary').textContent=data.topics.length?data.topics.length+' learning goals · '+(data.subject||'Your subject'):'No syllabus analyzed yet';
-    if(!data.topics.length){$('syllabusResults').innerHTML='<div class="empty"><b>Your subject roadmap will appear here</b>Upload or paste a syllabus to get started.</div>';return;}
-    const groups={};data.topics.forEach(t=>(groups[t.unit||'General topics']=groups[t.unit||'General topics']||[]).push(t));
-    $('syllabusResults').innerHTML='<div class="row" style="justify-content:space-between"><div><div class="eyebrow">YOUR EDITABLE ROADMAP</div><h3 style="font:600 17px Space Grotesk;margin:7px 0">'+escapeHtml(data.subject||'My syllabus')+'</h3><div class="tiny muted">'+data.topics.filter(t=>t.done).length+' of '+data.topics.length+' goals completed</div></div><button class="btn secondary" id="addTopic">+ Add topic</button></div><div class="progress" style="margin:15px 0 18px"><span style="width:'+(data.topics.length?data.topics.filter(t=>t.done).length/data.topics.length*100:0)+'%"></span></div>'+Object.keys(groups).map(unit=>'<div class="unit"><div class="unit-head"><strong>'+escapeHtml(unit)+'</strong><span class="tag">'+groups[unit].filter(t=>t.done).length+'/'+groups[unit].length+' DONE</span></div><div class="unit-body">'+groups[unit].map(t=>'<label style="display:flex;gap:8px;align-items:center;margin:5px 0;color:'+(t.done?'#71809f':'#b9c5df')+'"><input type="checkbox" data-topic="'+t.id+'" '+(t.done?'checked':'')+'><span style="flex:1">'+escapeHtml(t.title)+'</span><button class="tiny" data-delete-topic="'+t.id+'" style="background:none;border:0;color:#8792b1">×</button></label>').join('')+'</div></div>').join('')+'<div class="notice">Set a realistic deadline for each goal by using your Focus & Deadline calendar. The breakdown is editable: correct anything the document parser misunderstood.</div>';
-    $('syllabusResults').querySelectorAll('[data-topic]').forEach(c=>c.addEventListener('change',()=>toggleTask(c.dataset.topic)));
-    $('syllabusResults').querySelectorAll('[data-delete-topic]').forEach(b=>b.addEventListener('click',()=>{data.topics=data.topics.filter(t=>t.id!==b.dataset.deleteTopic);save();}));
-    $('addTopic').addEventListener('click',()=>{const title=prompt('Enter a learning topic:');if(title&&title.trim()){data.topics.push({id:uid(),title:title.trim(),unit:'Additional topics',done:false});save();}});
-  }
   function renderPyq(){
-    $('pyqSummary').textContent=data.papers.length?data.papers.length+' paper(s) analyzed':'No papers analyzed yet';
-    if(!data.papers.length){$('pyqResults').innerHTML='<div class="empty"><b>Your topic priority report will appear here</b>Upload papers to identify repeated topics.</div>';return;}
-    const rows=data.papers.slice().sort((a,b)=>b.score-a.score);
-    $('pyqResults').innerHTML='<div class="eyebrow">HISTORICAL PATTERNS IN YOUR UPLOADS</div><h3 style="font:600 17px Space Grotesk;margin:7px 0 4px">'+escapeHtml($('pyqSubject').value||data.subject||'Your paper set')+'</h3><div class="tiny muted">Matched against '+data.topics.length+' syllabus topics · '+data.papers.reduce((s,p)=>s+p.count,0)+' detected question segments</div>'+rows.map(p=>'<div class="priority-row"><div><div class="priority-name">'+escapeHtml(p.topic)+'</div><div class="priority-meta">'+p.count+' match(es) · '+p.paperCount+' paper(s)</div><div class="progress" style="margin-top:8px"><span style="width:'+p.score+'%"></span></div></div><div class="score">'+p.score+'</div></div>').join('')+'<div class="notice">Priority score is a relative indicator derived from topic matches in the uploaded documents. It is not a probability of appearing in your next exam. Review the extracted paper text and your complete syllabus before deciding what to study.</div>';
+    $('pyqSummary').textContent=data.papers.length?data.papers.length+' pattern groups':'No papers analyzed yet';
+    if(!data.papers.length){$('pyqResults').innerHTML='<div class="empty"><b>Your question-pattern report will appear here</b>Upload papers to find repeated or similar questions.</div>';return;}
+    const total=data.papers.reduce((sum,p)=>sum+p.count,0);
+    $('pyqResults').innerHTML='<div class="eyebrow">OBSERVED IN YOUR UPLOADS</div><h3 style="font:600 17px Space Grotesk;margin:7px 0 4px">'+escapeHtml(data.pyqSubject||'Uploaded paper set')+'</h3><div class="tiny muted">'+total+' extracted question candidates · '+data.papers.length+' pattern groups</div>'+
+      data.papers.map(p=>'<div class="result-card"><div class="row" style="justify-content:space-between"><h4>'+escapeHtml(p.label)+'</h4><span class="tag">'+p.count+' occurrence(s)</span></div><div class="priority-meta">'+p.paperCount+' distinct paper(s): '+escapeHtml((p.paperNames||[]).join(', '))+'</div><div class="notice">Grouping: '+escapeHtml(p.confidence||'lexical-match')+'. This is a text-similarity grouping, not a verified topic classification.</div>'+
+      (p.examples||[]).map(x=>'<div class="task" style="margin-top:8px"><div><div class="task-title">'+escapeHtml(x.paper)+'</div><div class="task-meta">'+escapeHtml(x.question)+'</div></div></div>').join('')+'</div>').join('')+
+      '<div class="notice">Evidence boundary: counts describe only the files uploaded in this session. Similar wording may be grouped incorrectly; paraphrased questions may be missed. Review source questions before relying on any pattern. This report does not predict future exams.</div>';
   }
   function renderFocus(){
     $('examName').value=data.examName||'';$('examDate').value=data.examDate||'';
@@ -157,23 +144,6 @@
   }
   function uid(){return Math.random().toString(36).slice(2,10);}
   function toggleTask(id){const t=data.topics.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done){const day=todayKey();if(!data.studyDays.includes(day))data.studyDays.push(day);}save();}
-  function normalizeLines(text){return text.replace(/\r/g,'').split('\n').map(x=>x.replace(/\s+/g,' ').trim()).filter(Boolean);}
-  function parseSyllabus(text){
-    const lines=normalizeLines(text),out=[];let unit='General topics';
-    const heading=/^(unit|module|chapter|section|part)\s*[\-:.\divx]*/i;
-    const numbered=/^(\d+(\.\d+)*[\).]?|[•\-–])\s+/;
-    lines.forEach((line,i)=>{
-      if(line.length>110)return;
-      if(heading.test(line)||(/^([A-Z][A-Z\s&/-]{3,})$/.test(line)&&line.length<65)){unit=line.replace(/[:\-]+$/,'');return;}
-      let title=line.replace(numbered,'').replace(/^\s*[•\-–]\s*/,'').trim();
-      if(title.length<3||title.length>95)return;
-      if(/^(course outcomes|course objectives|text books|references|unit wise|syllabus|learning outcomes)$/i.test(title))return;
-      if(/^\d+(\.\d+)+/.test(line)||numbered.test(line)||line.length<75){out.push({id:uid(),title,unit,done:false});}
-      else if(out.length&&out[out.length-1].unit===unit&&out[out.length-1].title.length<48&&line.length<70){out.push({id:uid(),title,unit,done:false});}
-    });
-    if(!out.length){lines.filter(x=>x.length>3&&x.length<90).slice(0,35).forEach(x=>out.push({id:uid(),title:x,unit,done:false}));}
-    return out.slice(0,80);
-  }
   async function extractFile(file){
     const ext=file.name.split('.').pop().toLowerCase();
     if(ext==='txt'||ext==='md')return await file.text();
@@ -187,29 +157,58 @@
     }
     throw new Error('Please use a PDF, TXT or MD file.');
   }
-  let syllabusExtract='';
-  $('chooseSyllabus').addEventListener('click',()=>$('syllabusFile').click());
-  $('syllabusFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{syllabusExtract=await extractFile(f);$('syllabusText').value=syllabusExtract;$('subjectName').value=$('subjectName').value||f.name.replace(/\.[^.]+$/,'');toast('Syllabus text extracted. Review it before analysis.');}catch(err){toast(err.message);}});
-  $('syllabusDrop').addEventListener('dragover',e=>{e.preventDefault();$('syllabusDrop').classList.add('drag');});
-  $('syllabusDrop').addEventListener('dragleave',()=>$('syllabusDrop').classList.remove('drag'));
-  $('syllabusDrop').addEventListener('drop',async e=>{e.preventDefault();$('syllabusDrop').classList.remove('drag');const f=e.dataTransfer.files[0];if(!f)return;try{syllabusExtract=await extractFile(f);$('syllabusText').value=syllabusExtract;$('subjectName').value=$('subjectName').value||f.name.replace(/\.[^.]+$/,'');toast('File extracted. Review the text.');}catch(err){toast(err.message);}});
-  $('analyzeSyllabus').addEventListener('click',()=>{const text=$('syllabusText').value.trim();if(!text){toast('Upload a syllabus or paste its text first.');return;}const topics=parseSyllabus(text);if(!topics.length){toast('No topics found. Try pasting clearer syllabus text.');return;}data.subject=$('subjectName').value.trim()||'My subject';data.topics=topics;save();toast(topics.length+' learning goals created. Review and edit them below.');});
-  $('demoSyllabus').addEventListener('click',()=>{$('subjectName').value='Data Structures';$('syllabusText').value='UNIT 1 - INTRODUCTION\n1.1 Basic concepts of data structures\n1.2 Types of data structures\n1.3 Algorithm complexity and Big O notation\nUNIT 2 - ARRAYS AND LINKED LISTS\n2.1 Array operations\n2.2 Singly linked lists\n2.3 Doubly linked lists\n2.4 Circular linked lists\nUNIT 3 - STACKS AND QUEUES\n3.1 Stack operations\n3.2 Infix and postfix expressions\n3.3 Queue operations\n3.4 Circular queue\nUNIT 4 - TREES AND GRAPHS\n4.1 Binary trees\n4.2 Tree traversal\n4.3 Graph representation\n4.4 Graph traversal';toast('Sample syllabus loaded. Select Break down my syllabus.');});
   let pyqRaw=[];
   $('choosePyq').addEventListener('click',()=>$('pyqFiles').click());
   $('pyqFiles').addEventListener('change',e=>{selectedPyq=Array.from(e.target.files);$('pyqFileList').textContent=selectedPyq.length?selectedPyq.map(f=>f.name).join(' · '):'No papers selected.';});
   $('pyqDrop').addEventListener('dragover',e=>{e.preventDefault();$('pyqDrop').classList.add('drag');});
   $('pyqDrop').addEventListener('dragleave',()=>$('pyqDrop').classList.remove('drag'));
   $('pyqDrop').addEventListener('drop',e=>{e.preventDefault();$('pyqDrop').classList.remove('drag');selectedPyq=Array.from(e.dataTransfer.files);$('pyqFileList').textContent=selectedPyq.map(f=>f.name).join(' · ')||'No papers selected.';});
-  function makePyqReport(docs){
-    const topics=data.topics.map(t=>t.title);if(!topics.length)throw new Error('Add a syllabus first so questions can be compared with your topics.');
-    const counts={};topics.forEach(t=>counts[t]={count:0,papers:new Set()});
-    docs.forEach((doc,idx)=>{const chunks=doc.text.split(/(?=(?:^|\n)\s*(?:Q(?:uestion)?\.?\s*)?\d+[\).:\s])/im);const segments=chunks.length>1?chunks:doc.text.split(/\n+/);segments.forEach(seg=>{const lower=seg.toLowerCase();topics.forEach(topic=>{const terms=topic.toLowerCase().split(/[^a-z0-9]+/).filter(x=>x.length>3);if(terms.length&&terms.some(term=>lower.includes(term))){counts[topic].count++;counts[topic].papers.add(idx);}});});});
-    const max=Math.max(1,...Object.values(counts).map(x=>x.count));
-    return Object.keys(counts).map(topic=>({topic,count:counts[topic].count,paperCount:counts[topic].papers.size,score:Math.round(counts[topic].count/max*100)})).filter(x=>x.count>0).sort((a,b)=>b.score-a.score);
+  // Baseline PYQ pipeline: segment questions, normalize text, and group close lexical matches.
+  // This is a transparent baseline for evaluation, not a semantic AI model or exam predictor.
+  function splitQuestions(text){
+    const cleaned=String(text||'').replace(/\r/g,'').replace(/[ \t]+/g,' ').trim();
+    if(!cleaned) return [];
+    // Prefer explicit question numbering; fall back to paragraph candidates only when needed.
+    const marked=cleaned.split(/(?=(?:^|\n)\s*(?:Q(?:uestion)?\.?\s*)?\d{1,3}\s*[).:\-])/im).map(x=>x.trim()).filter(Boolean);
+    const candidates=marked.length>1?marked:cleaned.split(/\n{1,}/).map(x=>x.trim()).filter(x=>x.length>=35);
+    return candidates.map((raw,index)=>({raw:raw.slice(0,1800),number:index+1})).filter(q=>q.raw.length>=18);
   }
-  $('analyzePyq').addEventListener('click',async()=>{if(!selectedPyq.length){toast('Choose one or more papers first.');return;}try{const docs=[];for(const f of selectedPyq){docs.push({name:f.name,text:await extractFile(f)});}const report=makePyqReport(docs);if(!report.length){toast('No syllabus topic matches found. Check your syllabus wording and paper text.');return;}data.papers=report;data.pyqSubject=$('pyqSubject').value;save();toast('Analysis complete. Review the evidence below.');}catch(err){toast(err.message);}});
-  $('demoPyq').addEventListener('click',()=>{if(!data.topics.length){toast('Load the sample syllabus first, then try the sample papers.');return;}const fake=[{text:'Q1 Explain singly linked list and insertion operation. Q2 Explain stack using array. Q3 Define Big O notation.'},{text:'Q1 Write algorithm for deletion in linked list. Q2 Explain infix to postfix conversion. Q3 Explain circular queue.'},{text:'Q1 Explain linked list types. Q2 Describe stack operations with example. Q3 Explain queue and circular queue.'}];try{data.papers=makePyqReport(fake);data.pyqSubject='Sample Data Structures papers';save();toast('Sample PYQ report generated.');}catch(err){toast(err.message);}});
+  function normalizeQuestion(value){
+    return String(value||'').toLowerCase()
+      .replace(/\b(?:q(?:uestion)?\.?\s*)?\d{1,3}\b/g,' ')
+      .replace(/[^a-z0-9]+/g,' ').trim().replace(/\s+/g,' ');
+  }
+  function tokenSet(value){
+    return new Set(normalizeQuestion(value).split(' ').filter(t=>t.length>2&&!/^(the|and|for|with|from|what|when|where|which|write|explain|define|describe|discuss|using|give|show|derive|state)$/.test(t)));
+  }
+  function similarity(a,b){
+    const A=tokenSet(a),B=tokenSet(b);if(!A.size||!B.size)return 0;
+    let intersection=0;A.forEach(t=>{if(B.has(t))intersection++;});
+    return intersection/(A.size+B.size-intersection);
+  }
+  function makePyqReport(docs){
+    const extracted=[];
+    docs.forEach((doc,paperIndex)=>{
+      splitQuestions(doc.text).forEach(q=>extracted.push({...q,paperName:doc.name||('Paper '+(paperIndex+1)),paperIndex,normalized:normalizeQuestion(q.raw)}));
+    });
+    if(!extracted.length) throw new Error('No reliable question candidates were extracted. Try text-based PDFs or clearer TXT files.');
+    const groups=[];
+    extracted.forEach(question=>{
+      let best=null,bestScore=0;
+      groups.forEach(group=>group.members.forEach(member=>{const score=similarity(question.normalized,member.normalized);if(score>bestScore){bestScore=score;best=group;}}));
+      // Conservative threshold reduces false merges; users can inspect original questions.
+      if(best&&bestScore>=0.62) best.members.push(question);
+      else groups.push({members:[question]});
+    });
+    return groups.map((group,index)=>{
+      const papers=[...new Set(group.members.map(x=>x.paperName))];
+      const representative=group.members.slice().sort((a,b)=>b.raw.length-a.raw.length)[0];
+      return {id:'pattern-'+(index+1),label:representative.raw.slice(0,145),count:group.members.length,paperCount:papers.length,paperNames:papers,examples:group.members.slice(0,5).map(x=>({paper:x.paperName,question:x.raw})),confidence:group.members.length>1?'lexical-match':'single-observation'};
+    }).sort((a,b)=>b.paperCount-a.paperCount||b.count-a.count);
+  }
+  $('analyzePyq').addEventListener('click',async()=>{if(!selectedPyq.length){toast('Choose one or more papers first.');return;}try{const docs=[];for(const f of selectedPyq){docs.push({name:f.name,text:await extractFile(f)});}const report=makePyqReport(docs);data.papers=report;data.pyqSubject=$('pyqSubject').value;data.paperNames=docs.map(d=>d.name);save();toast('Question patterns extracted. Verify each group against its source papers.');}catch(err){toast(err.message);}});
+  // Clearly labelled synthetic examples help test the interface; they are not real exam evidence.
+  $('demoPyq').addEventListener('click',()=>{const fake=[{name:'Demo paper 2022',text:'Q1 Explain the operations of a singly linked list with an example.\nQ2 Describe stack implementation using arrays.\nQ3 Explain Big O notation and time complexity.'},{name:'Demo paper 2023',text:'Q1 Explain insertion and deletion operations in a singly linked list.\nQ2 Convert an infix expression into postfix using a stack.\nQ3 Explain circular queue operations.'},{name:'Demo paper 2024',text:'Q1 Describe different operations on linked lists.\nQ2 Explain stack operations with a suitable example.\nQ3 Discuss circular queue implementation.'}];try{data.papers=makePyqReport(fake);data.pyqSubject='Synthetic demo papers (not real PYQs)';save();toast('Synthetic demo loaded. Do not treat it as real exam evidence.');}catch(err){toast(err.message);}});
   $('saveExam').addEventListener('click',()=>{if(!$('examDate').value){toast('Choose an exam date.');return;}data.examName=$('examName').value.trim()||'Upcoming exam';data.examDate=$('examDate').value;save();toast('Exam countdown saved.');});
   $('timerStart').addEventListener('click',()=>{if(timerRunning){clearInterval(timerInterval);timerRunning=false;$('timerStart').textContent='Resume';$('timerLabel').textContent='PAUSED';return;}timerRunning=true;$('timerStart').textContent='Pause';$('timerLabel').textContent='FOCUS IN PROGRESS';timerInterval=setInterval(()=>{timerSeconds--;updateTimer();if(timerSeconds<=0){clearInterval(timerInterval);timerRunning=false;data.focusSeconds+=25*60;data.completedSessions++;const day=todayKey();if(!data.studyDays.includes(day))data.studyDays.push(day);save();timerSeconds=25*60;updateTimer();$('timerStart').textContent='Start focus';$('timerLabel').textContent='SESSION COMPLETE · WELL DONE';toast('Focus session completed. Great work!');}},1000);});
   $('timerReset').addEventListener('click',()=>{clearInterval(timerInterval);timerRunning=false;timerSeconds=25*60;updateTimer();$('timerStart').textContent='Start focus';$('timerLabel').textContent='READY WHEN YOU ARE';});
