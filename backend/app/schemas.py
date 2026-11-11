@@ -1,11 +1,12 @@
 """Validated API contracts for PYQ analysis."""
+from typing import Literal
 from pydantic import BaseModel, Field, field_validator
 
 
 class PaperInput(BaseModel):
     # The browser extracts selectable text; original file bytes are not stored by this API.
     name: str = Field(min_length=1, max_length=180)
-    text: str = Field(min_length=30)
+    text: str = Field(min_length=30, max_length=120_000)
 
     @field_validator("name")
     @classmethod
@@ -23,7 +24,7 @@ class QuestionClassification(BaseModel):
     canonical_topic: str = Field(min_length=1, max_length=120)
     subtopic: str = Field(default="", max_length=120)
     concept_summary: str = Field(min_length=1, max_length=500)
-    question_type: str = Field(min_length=1, max_length=60)
+    question_type: Literal[\"definition\", \"explanation\", \"comparison\", \"derivation\", \"numerical\", \"problem_solving\", \"coding\", \"proof\", \"diagram\", \"short_note\", \"application\", \"mixed\", \"uncertain\"]
     difficulty: str = Field(pattern="^(easy|moderate|challenging|uncertain)$")
     rationale: str = Field(min_length=1, max_length=400)
     confidence: str = Field(pattern="^(high|medium|low)$")
