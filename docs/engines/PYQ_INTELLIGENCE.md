@@ -65,7 +65,7 @@ The backend, not Gemini, calculates:
 - distinct papers containing each topic
 - paper coverage percentage
 - question-type distribution
-- repeated / related question groups
+- repeated / related question groups built only from reciprocal Gemini links between valid source question IDs
 
 Aggregation uses returned question IDs and validated source records. Topic normalization and clustering rules must be versioned and tested. A topic frequency is a count of classified extracted records, not a probability of appearing in a future exam.
 
