@@ -28,7 +28,7 @@ Gemini is an interpretation layer. It does not generate counts. Frequencies are 
 
 ## Run the backend locally
 
-See [backend setup](backend/README.md). Quick start:
+See [backend setup](backend/README.md) and [private Gemini API key setup](backend/API_KEY_SETUP.md). Quick start:
 
 ```powershell
 cd backend
