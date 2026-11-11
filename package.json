@@ -1,0 +1,9 @@
+{
+  "name": "studysprint",
+  "version": "0.2.0",
+  "private": true,
+  "description": "PYQ Intelligence prototype with an independently testable engine baseline",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
