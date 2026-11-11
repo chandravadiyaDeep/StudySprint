@@ -14,6 +14,15 @@ StudySprint is an early-stage, browser-only academic planning experiment. It hel
 - Focus timer and exam countdown
 - Local browser storage and JSON data export
 
+## Intelligence engine specifications
+
+The two core engines are being designed independently. Their algorithm choices, evidence requirements, evaluation plans, API contracts, and release criteria are documented here:
+
+- [Syllabus Intelligence Engine](docs/syllabus-intelligence.md)
+- [PYQ Intelligence Engine](docs/pyq-intelligence.md)
+
+These are engineering specifications, not claims that the engines are already implemented. The current website remains a browser-only validation prototype; the backend and measured algorithms are future implementation work. The system must abstain when evidence is weak and must never present historical frequency as a guaranteed exam prediction.
+
 ## Run locally
 
 Open `index.html` in a modern browser. PDF reading uses PDF.js from a public CDN, so an internet connection is needed for PDF files. TXT and Markdown parsing works without that library.
