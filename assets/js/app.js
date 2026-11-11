@@ -1,4 +1,4 @@
-/* StudySprint validation build: browser-only storage and transparent document heuristics. */
+/* StudySprint PYQ V1: browser UI, PDF text extraction and Gemini-backed API client. */
 (function(){
   'use strict';
   const KEY='studysprint.validation.v1';
