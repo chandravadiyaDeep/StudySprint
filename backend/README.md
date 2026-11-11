@@ -41,7 +41,7 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 }
 ```
 
-The browser currently extracts selectable PDF text with PDF.js. The backend segments question candidates, asks Gemini to classify the supplied records, then calculates topic counts from returned question IDs and original source records. It does not store uploaded paper text.
+The browser currently extracts selectable PDF text with PDF.js and stores the returned report locally in browser localStorage. The backend segments question candidates, asks Gemini to classify the supplied records, then calculates topic counts from returned question IDs and original source records. The backend does not persist uploaded paper text. Extracted text is transmitted to Google Gemini; review Google's current data-handling terms before using sensitive documents.
 
 ## 5. Current limitations (honest V1 baseline)
 - Scanned PDFs need OCR and are not supported by the current browser extraction flow.
