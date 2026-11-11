@@ -43,6 +43,7 @@ class EvidenceQuestion(BaseModel):
     question_type: str
     difficulty: str
     confidence: str
+    related_question_ids: list[str] = Field(default_factory=list)
 
 
 class TopicEvidence(BaseModel):
@@ -56,6 +57,15 @@ class TopicEvidence(BaseModel):
     confidence_note: str
 
 
+class SimilarQuestionGroup(BaseModel):
+    group_id: str
+    topic: str
+    question_count: int
+    paper_count: int
+    papers: list[str]
+    questions: list[EvidenceQuestion]
+
+
 class AnalyzeResponse(BaseModel):
     engine_version: str
     prompt_version: str
@@ -64,6 +74,7 @@ class AnalyzeResponse(BaseModel):
     papers_received: int
     questions_extracted: int
     topics: list[TopicEvidence]
+    similar_question_groups: list[SimilarQuestionGroup] = Field(default_factory=list)
     unclassified_questions: list[dict]
     warnings: list[str]
     evidence_notice: str
