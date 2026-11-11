@@ -5,6 +5,8 @@ on:
     branches: ["**"]
     paths:
       - "backend/**"
+      - "assets/**"
+      - "index.html"
       - ".github/workflows/backend-tests.yml"
   pull_request:
     paths:
