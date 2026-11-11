@@ -41,13 +41,16 @@
     $('pyqSummary').textContent=data.pyqAnalysis?data.pyqAnalysis.topics.length+' AI-classified topics':'No papers analyzed yet';
     if(!data.pyqAnalysis){$('pyqResults').innerHTML='<div class="empty"><b>Your evidence-backed report will appear here</b>Upload previous-year papers and connect the Gemini-powered analysis API.</div>';return;}
     const result=data.pyqAnalysis;
-    $('pyqResults').innerHTML='<div class="eyebrow">GEMINI-ASSISTED ANALYSIS · '+escapeHtml(result.model||'model')+'</div><h3 style="font:600 17px Space Grotesk;margin:7px 0 4px">'+escapeHtml(result.subject||'Uploaded paper set')+'</h3><div class="tiny muted">'+result.questions_extracted+' extracted question candidates · '+result.papers_received+' papers · Engine '+escapeHtml(result.engine_version)+'</div>'+
-      result.topics.map(topic=>'<div class="result-card"><div class="row" style="justify-content:space-between"><h4>'+escapeHtml(topic.topic)+'</h4><span class="tag">'+topic.question_count+' question(s)</span></div><div class="priority-meta">'+topic.paper_count+' of '+result.papers_received+' papers ('+topic.paper_coverage_percent+'%) · '+escapeHtml((topic.papers||[]).join(', '))+'</div><p class="tiny" style="color:#c2cbe2;line-height:1.7">'+escapeHtml(topic.concept_summary)+'</p><div class="notice">'+escapeHtml(topic.confidence_note)+'</div>'+
-      (topic.questions||[]).map(q=>'<div class="task" style="margin-top:8px"><div><div class="task-title">'+escapeHtml(q.paper_name)+' · '+escapeHtml(q.question_type)+' · '+escapeHtml(q.difficulty)+'</div><div class="task-meta">'+escapeHtml(q.question_text)+'</div></div></div>').join('')+'</div>').join('')+
-      (result.unclassified_questions||[]).length?'<div class="notice">'+result.unclassified_questions.length+' extracted question(s) were not classified and are excluded from topic frequencies.</div>':''+
-      (result.warnings||[]).map(w=>'<div class="notice">Review note: '+escapeHtml(w)+'</div>').join('')+
-      '<div class="notice">'+escapeHtml(result.evidence_notice)+'</div>';
+    const topicCards=(result.topics||[]).map(topic=>{
+      const questionCards=(topic.questions||[]).map(q=>'<div class="task" style="margin-top:8px"><div><div class="task-title">'+escapeHtml(q.paper_name)+' · '+escapeHtml(q.question_type)+' · '+escapeHtml(q.difficulty)+'</div><div class="task-meta">'+escapeHtml(q.question_text)+'</div></div></div>').join('');
+      return '<div class="result-card"><div class="row" style="justify-content:space-between"><h4>'+escapeHtml(topic.topic)+'</h4><span class="tag">'+topic.question_count+' question(s)</span></div><div class="priority-meta">'+topic.paper_count+' of '+result.papers_received+' papers ('+topic.paper_coverage_percent+'%) · '+escapeHtml((topic.papers||[]).join(', '))+'</div><p class="tiny" style="color:#c2cbe2;line-height:1.7">'+escapeHtml(topic.concept_summary)+'</p><div class="notice">'+escapeHtml(topic.confidence_note)+'</div>'+questionCards+'</div>';
+    }).join('');
+    const unclassified=result.unclassified_questions||[];
+    const unclassifiedNotice=unclassified.length?'<div class="notice">'+unclassified.length+' extracted question(s) were not classified and are excluded from topic frequencies.</div>':'';
+    const warningNotices=(result.warnings||[]).map(w=>'<div class="notice">Review note: '+escapeHtml(w)+'</div>').join('');
+    $('pyqResults').innerHTML='<div class="eyebrow">GEMINI-ASSISTED ANALYSIS · '+escapeHtml(result.model||'model')+'</div><h3 style="font:600 17px Space Grotesk;margin:7px 0 4px">'+escapeHtml(result.subject||'Uploaded paper set')+'</h3><div class="tiny muted">'+result.questions_extracted+' extracted question candidates · '+result.papers_received+' papers · Engine '+escapeHtml(result.engine_version)+'</div>'+topicCards+unclassifiedNotice+warningNotices+'<div class="notice">'+escapeHtml(result.evidence_notice)+'</div>';
   }
+  
   function renderFocus(){
     $('examName').value=data.examName||'';$('examDate').value=data.examDate||'';
     $('examCountdown').innerHTML=data.examDate?'<div class="glass" style="padding:17px;background:rgba(100,230,225,.05)"><div class="eyebrow">'+escapeHtml(data.examName||'EXAM COUNTDOWN')+'</div><div class="streak-number">'+daysUntil(data.examDate)+'</div><div class="tiny muted">days until '+dateLabel(data.examDate)+'</div></div>':'<div class="empty">Add an exam date to start your countdown.</div>';
