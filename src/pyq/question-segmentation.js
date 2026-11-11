@@ -9,7 +9,7 @@
 
     // Prefer explicit question numbering; paragraph fallback is deliberately marked weak.
     const numbered = cleaned
-      .split(/(?=(?:^|\n)\s*(?:Q(?:uestion)?\.?\s*)?\d{1,3}\s*[).:\-])/im)
+      .split(/(?=(?:^|\n)\s*(?:Q(?:uestion)?\.?\s*)?\d{1,3}(?:\s*[).:\-]|\s+))/im)
       .map((value) => value.trim())
       .filter(Boolean);
 
