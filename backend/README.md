@@ -47,5 +47,5 @@ The browser currently extracts selectable PDF text with PDF.js. The backend segm
 - Scanned PDFs need OCR and are not supported by the current browser extraction flow.
 - Numbered-question segmentation is conservative and will need testing against real university paper formats.
 - Gemini topic labels and explanations are AI interpretations and require review.
-- The API is an early development service: authentication, rate limiting, quotas, persistent audit history and abuse protection must be added before a public production launch.
+- The API has a basic per-IP request limit (5 analyses/minute) but is still an early development service. Authentication, user quotas, durable abuse protection, monitoring, audit history and a production privacy/retention policy are required before unrestricted public launch.
 - Configure exact CORS origins before deployment. Do not use wildcard CORS with a secret-bearing API.
